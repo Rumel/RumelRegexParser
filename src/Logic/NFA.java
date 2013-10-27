@@ -3,7 +3,6 @@ package Logic;
 import Enums.Operation;
 import Models.Graph;
 import Models.NFADecision;
-import Models.Tuple;
 
 /**
  * Created with IntelliJ IDEA.
