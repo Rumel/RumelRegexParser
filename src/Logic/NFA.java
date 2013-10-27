@@ -2,6 +2,7 @@ package Logic;
 
 import Enums.Operation;
 import Models.Graph;
+import Models.NFADecision;
 import Models.Tuple;
 
 /**
@@ -23,7 +24,7 @@ public class NFA {
         return null;
     }
 
-    private void characterSwitch(String s)
+    private NFADecision characterSwitch(String s)
     {
         switch(s.charAt(0))
         {
@@ -51,14 +52,16 @@ public class NFA {
                 }
                 break;
             case '(':
-                Tuple parentheses = getWithinParenths(s);
+                NFADecision decision = getWithinParenths(s);
                 break;
             default:
                 break;
         }
+
+        return null;
     }
 
-    private Tuple<String, Operation> getWithinParenths(String s)
+    private NFADecision getWithinParenths(String s)
     {
         char[] characters = s.toCharArray();
         int foundParenths = 0;
@@ -97,7 +100,34 @@ public class NFA {
                     op = Operation.NONE;
                 }
 
-                return new Tuple(String.copyValueOf(characters, 1, i - 1), op);
+                String beginning = String.copyValueOf(characters, 1, i - 1);
+                String leftover;
+                if(op == Operation.NONE)
+                {
+                    int opLength = i + 1;
+                    if(characters.length > opLength)
+                    {
+                        leftover = String.copyValueOf(characters, opLength, characters.length - opLength);
+                    }
+                    else
+                    {
+                        leftover = null;
+                    }
+                }
+                else
+                {
+                    int opLength = i + 2;
+                    if(characters.length > opLength)
+                    {
+                        leftover = String.copyValueOf(characters, opLength, characters.length - opLength);
+                    }
+                    else
+                    {
+                        leftover = null;
+                    }
+                }
+
+                return new NFADecision(beginning, leftover, op);
             }
         }
 
