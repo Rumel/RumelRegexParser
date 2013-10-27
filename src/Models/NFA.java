@@ -19,33 +19,37 @@ public class NFA {
         return null;
     }
 
-    public void characterSwitch(String s)
+    private void characterSwitch(String s)
     {
         switch(s.charAt(0))
         {
             case 'a' | 'A':
             case 'b' | 'B':
+                Operation op;
                 if(s.length() > 1)
                 {
                     switch(s.charAt(1))
                     {
                         case '*':
-                            System.out.println(String.format("Found %c*", s.charAt(0)));
+                            op = Operation.KLEENE;
                             break;
                         case '|':
-                            System.out.println(String.format("Found %c|", s.charAt(0)));
+                            op = Operation.OR;
                             break;
                         default:
-                            System.out.println(String.format("Found %c", s.charAt(0)));
+                            op = Operation.NONE;
                             break;
                     }
                 }
+                else
+                {
+                    op = Operation.NONE;
+                }
                 break;
             case '(':
-                String withinParenths = getWithinParenths(s).getFirst();
+                Tuple parentheses = getWithinParenths(s);
                 break;
             default:
-                System.out.println("Entered default");
                 break;
         }
     }
