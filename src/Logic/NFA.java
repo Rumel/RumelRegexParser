@@ -26,13 +26,17 @@ public class NFA {
 
     private NFADecision characterSwitch(String s)
     {
+        NFADecision decision;
         switch(s.charAt(0))
         {
             case 'a' | 'A':
             case 'b' | 'B':
+                String beginning;
+                String leftover;
                 Operation op;
                 if(s.length() > 1)
                 {
+                    beginning = String.valueOf(s.charAt(0));
                     switch(s.charAt(1))
                     {
                         case '*':
@@ -45,20 +49,40 @@ public class NFA {
                             op = Operation.NONE;
                             break;
                     }
+
+                    if(op != Operation.NONE)
+                    {
+                        if(s.length() > 2)
+                        {
+                            leftover = s.substring(2);
+                        }
+                        else
+                        {
+                            leftover = null;
+                        }
+                    }
+                    else
+                    {
+                        leftover = null;
+                    }
                 }
                 else
                 {
+                    beginning = String.valueOf(s.charAt(0));
                     op = Operation.NONE;
+                    leftover = null;
                 }
+                decision = new NFADecision(beginning, leftover, op);
                 break;
             case '(':
-                NFADecision decision = getWithinParenths(s);
+                decision = getWithinParenths(s);
                 break;
             default:
+                decision = null;
                 break;
         }
 
-        return null;
+        return decision;
     }
 
     private NFADecision getWithinParenths(String s)
