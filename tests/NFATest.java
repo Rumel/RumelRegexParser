@@ -1,4 +1,4 @@
-import Models.NFA;
+import Logic.NFA;
 import Enums.Operation;
 import Models.Tuple;
 import org.junit.Assert;
