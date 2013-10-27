@@ -1,4 +1,5 @@
-import Logic.NFA;
+package Logic;
+
 import Enums.Operation;
 import Models.NFADecision;
 import org.junit.Assert;
