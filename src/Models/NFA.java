@@ -1,5 +1,7 @@
 package Models;
 
+import Enums.Operation;
+
 /**
  * Created with IntelliJ IDEA.
  * User: daltondick

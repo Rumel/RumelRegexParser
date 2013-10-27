@@ -1,5 +1,5 @@
 import Models.NFA;
-import Models.Operation;
+import Enums.Operation;
 import Models.Tuple;
 import org.junit.Assert;
 import org.junit.Before;

@@ -1,4 +1,4 @@
-package Models;
+package Enums;
 
 /**
  * Created with IntelliJ IDEA.
