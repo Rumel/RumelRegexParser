@@ -79,8 +79,41 @@ public class Graph {
 
     public static Graph OrGraph(Graph first, Graph second)
     {
+        Graph g = new Graph();
+        g.addVertex().setStartState();
+        g = Graph.ConcatGraphs(g, first);
+        g.getStateAt(g.size() - 1).unsetFinalState();
 
-        return null;
+
+        //
+        //    1 a 2
+        //  /       \
+        // 0          5
+        //  \       /
+        //   3  b  4
+        //
+
+        int size = g.size();
+        for(int i = 0; i < second.size(); i++)
+        {
+            g.addVertex();
+        }
+
+        for(int i = 0; i < second.size(); i++)
+        {
+            List<Transition> edges = second.edgesOf(i);
+            for(Transition t: edges)
+            {
+                g.addEdge(size + i, size + t.getStateNumber(), t.getTransitionType());
+            }
+        }
+
+        g.addVertex().setFinalState();
+        g.addEdge(0, size, TransitionType.EPSILON);
+        g.addEdge(size - 1, g.size() - 1, TransitionType.EPSILON);
+        g.addEdge(g.size() - 2, g.size() - 1, TransitionType.EPSILON);
+
+        return g;
     }
 
     public boolean addEdge(int sourceVertex, int targetVertex, TransitionType transitionType) {

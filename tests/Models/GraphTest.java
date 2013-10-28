@@ -106,7 +106,33 @@ public class GraphTest {
         expected.addEdge(1, 2, TransitionType.A);
         expected.getStateAt(3).setFinalState();
 
-        Assert.assertTrue(g.toString() + "\n" + expected.toString() + "\n", g.equals(expected));
+        String failPrint = String.format("%s\n%s\n", g.toString(), expected.toString());
+        Assert.assertTrue(failPrint, g.equals(expected));
+    }
 
+    @Test
+    public void orGraph()
+    {
+        Graph a = Graph.SimpleGraph(TransitionType.A);
+        Graph b = Graph.SimpleGraph(TransitionType.B);
+
+        Graph actual = Graph.OrGraph(a, b);
+
+        Graph expected = new Graph();
+        for(int i = 0; i < 6; i++)
+        {
+            expected.addVertex();
+        }
+        expected.getStateAt(0).setStartState();
+        expected.getStateAt(5).setFinalState();
+        expected.addEdge(0, 1, TransitionType.EPSILON);
+        expected.addEdge(1, 2, TransitionType.A);
+        expected.addEdge(2, 5, TransitionType.EPSILON);
+        expected.addEdge(0, 3, TransitionType.EPSILON);
+        expected.addEdge(3, 4, TransitionType.B);
+        expected.addEdge(4, 5, TransitionType.EPSILON);
+
+        String failPrint = String.format("%s\n%s\n", actual.toString(), expected.toString());
+        Assert.assertTrue(failPrint, actual.equals(expected));
     }
 }
