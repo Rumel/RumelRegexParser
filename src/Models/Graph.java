@@ -84,15 +84,6 @@ public class Graph {
         g = Graph.ConcatGraphs(g, first);
         g.getStateAt(g.size() - 1).unsetFinalState();
 
-
-        //
-        //    1 a 2
-        //  /       \
-        // 0          5
-        //  \       /
-        //   3  b  4
-        //
-
         int size = g.size();
         for(int i = 0; i < second.size(); i++)
         {

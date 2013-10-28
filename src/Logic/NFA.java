@@ -1,6 +1,7 @@
 package Logic;
 
 import Enums.Operation;
+import Enums.TransitionType;
 import Models.Graph;
 import Models.NFADecision;
 
@@ -24,31 +25,53 @@ public class NFA {
         Graph beginningGraph;
         if(decision.getReadyToGraph())
         {
-            //Make graph on beginning here
+            switch(decision.getBeginning().charAt(0))
+            {
+                case 'a' | 'A':
+                    beginningGraph = Graph.SimpleGraph(TransitionType.A);
+                    break;
+                case 'b' | 'B':
+                    beginningGraph = Graph.SimpleGraph(TransitionType.B);
+                    break;
+                default:
+                    beginningGraph = null;
+                    break;
+            }
         }
         else
         {
-            //beginningGraph = makeNFA(decision.getBeginning());
+            beginningGraph = makeNFA(decision.getBeginning());
         }
 
-        Graph leftoverGraph;
+        Graph leftoverGraph = null;
         if(decision.getLeftovers() != null)
         {
-            // leftoverGraph = makeNFA(decision.getLeftovers());
-        }
-        else
-        {
-            // hmmmm....
+            leftoverGraph = makeNFA(decision.getLeftovers());
         }
 
         Graph finalGraph = null;
         switch (decision.getOperation())
         {
             case KLEENE:
+                finalGraph = Graph.KleeneGraph(beginningGraph);
+                if(leftoverGraph != null)
+                {
+                    finalGraph = Graph.ConcatGraphs(finalGraph, leftoverGraph);
+                }
                 break;
             case NONE:
+                finalGraph = beginningGraph;
+                if(leftoverGraph != null)
+                {
+                    finalGraph = Graph.ConcatGraphs(finalGraph, leftoverGraph);
+                }
                 break;
             case OR:
+                finalGraph = Graph.OrGraph(beginningGraph, leftoverGraph);
+                break;
+            case KLEENEOR:
+                finalGraph = Graph.KleeneGraph(beginningGraph);
+                finalGraph = Graph.OrGraph(finalGraph, leftoverGraph);
                 break;
             default:
                 break;
@@ -88,6 +111,14 @@ public class NFA {
                         if(s.length() > 2)
                         {
                             leftover = s.substring(2);
+                            if(op == Operation.KLEENE)
+                            {
+                                if(leftover.charAt(0) == '|')
+                                {
+                                    op = Operation.KLEENEOR;
+                                    leftover = s.substring(3);
+                                }
+                            }
                         }
                         else
                         {

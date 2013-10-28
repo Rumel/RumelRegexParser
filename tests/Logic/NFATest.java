@@ -1,6 +1,7 @@
 package Logic;
 
 import Enums.Operation;
+import Models.Graph;
 import Models.NFADecision;
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class NFATest {
         Assert.assertEquals("Expected to find 'ab'", "ab", getNFADecision(nfa, method, "(ab)").getBeginning());
         Assert.assertEquals("Expected to find 'abb'", "abb", getNFADecision(nfa, method, "(abb)").getBeginning());
         Assert.assertEquals("Expected to find 'a'", "a", getNFADecision(nfa, method, "(a)a").getBeginning());
-        Assert.assertEquals("Expected to find 'ab'", "ab", getNFADecision(nfa, method,  "(ab)b").getBeginning());
+        Assert.assertEquals("Expected to find 'ab'", "ab", getNFADecision(nfa, method, "(ab)b").getBeginning());
         Assert.assertEquals("Expected to find 'abb'", "abb", getNFADecision(nfa, method, "(abb)ba").getBeginning());
     }
 
@@ -112,6 +113,78 @@ public class NFATest {
 
         NFADecision nfa5 = getNFADecision(nfa, method, "(ab)(bbbbb)*");
         assertNFADecision(nfa5, "ab", "(bbbbb)*", Operation.NONE, false);
+    }
+
+    // a
+    @Test
+    public void makeNFASimple()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("a");
+        System.out.println(g.toString());
+    }
+
+    // a*
+    @Test
+    public void makeNFASimpleKleene()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("a*");
+        System.out.println(g.toString());
+    }
+
+    // a|b
+    @Test
+    public void makeNFASimpleOr()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("a|b");
+        System.out.println(g.toString());
+    }
+
+    // a*b
+    @Test
+    public void makeNFASimpleKleenePlusLetter()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("a*b");
+        System.out.println(g.toString());
+    }
+
+    // a*|b
+    @Test
+    public void makeNFASimpleKeeneAndOr()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("a*|b");
+        System.out.println(g.toString());
+    }
+
+    // (a*)|b
+    @Test
+    public void makeNFASimpleKeeneAndOrWithParentheses()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("a*|b");
+        System.out.println(g.toString());
+    }
+
+    // (a*|b)*
+    @Test
+    public void makeNFASimpleKeeneAndOrKleene()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("(a*|b)*");
+        System.out.println(g.toString());
+    }
+
+    // Extraneous parentheses
+    @Test
+    public void makeNFALotsOfParentheses()
+    {
+        NFA nfa = new NFA();
+        Graph g = nfa.makeNFA("(((a)))");
+        System.out.println(g.toString());
     }
 
     private NFADecision getNFADecision(NFA nfa, Method method, String regex)

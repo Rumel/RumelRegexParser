@@ -10,5 +10,6 @@ package Enums;
 public enum  Operation {
     KLEENE,
     OR,
+    KLEENEOR,
     NONE
 }
