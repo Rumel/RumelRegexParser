@@ -55,4 +55,58 @@ public class GraphTest {
         Assert.assertTrue(graph.containsEdge(0,1,TransitionType.A));
         Assert.assertTrue(graph.containsEdge(0,1,TransitionType.B));
     }
+
+    @Test
+    public void simpleGraph()
+    {
+        Graph g = Graph.SimpleGraph(TransitionType.A);
+        Assert.assertTrue(g.containsEdge(0, 1, TransitionType.A));
+        Assert.assertTrue(g.getStateAt(0).getStartState());
+        Assert.assertTrue(g.getStateAt(1).getFinalState());
+    }
+
+    @Test
+    public void concatGraph()
+    {
+        Graph g = Graph.SimpleGraph(TransitionType.A);
+        Graph h = Graph.SimpleGraph(TransitionType.B);
+        Graph concat = Graph.ConcatGraphs(g, h);
+
+        Graph test = new Graph();
+        State first = test.addVertex();
+        first.setStartState();
+        test.addVertex();
+        test.addVertex();
+        test.addVertex();
+        test.addEdge(0,1,TransitionType.A);
+        test.addEdge(1,2,TransitionType.EPSILON);
+        test.addEdge(2,3,TransitionType.B);
+        test.getStateAt(3).setFinalState();
+        Assert.assertTrue(concat.equals(test));
+    }
+
+    @Test
+    public void kleeneGraph()
+    {
+        Graph g = Graph.SimpleGraph(TransitionType.A);
+        g = Graph.KleeneGraph(g);
+
+        //    - -  -  -
+        //  /   / e \   \
+        // 0 - 1  A  2 -  3
+        Graph expected = new Graph();
+        expected.addVertex().setStartState();
+        expected.addVertex();
+        expected.addVertex();
+        expected.addVertex();
+        expected.addEdge(0, 3, TransitionType.EPSILON);
+        expected.addEdge(0, 1, TransitionType.EPSILON);
+        expected.addEdge(2, 1, TransitionType.EPSILON);
+        expected.addEdge(2, 3, TransitionType.EPSILON);
+        expected.addEdge(1, 2, TransitionType.A);
+        expected.getStateAt(3).setFinalState();
+
+        Assert.assertTrue(g.toString() + "\n" + expected.toString() + "\n", g.equals(expected));
+
+    }
 }

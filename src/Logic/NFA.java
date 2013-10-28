@@ -20,7 +20,41 @@ public class NFA {
 
     public Graph makeNFA(String regex)
     {
-        return null;
+        NFADecision decision = characterSwitch(regex);
+        Graph beginningGraph;
+        if(decision.getReadyToGraph())
+        {
+            //Make graph on beginning here
+        }
+        else
+        {
+            //beginningGraph = makeNFA(decision.getBeginning());
+        }
+
+        Graph leftoverGraph;
+        if(decision.getLeftovers() != null)
+        {
+            // leftoverGraph = makeNFA(decision.getLeftovers());
+        }
+        else
+        {
+            // hmmmm....
+        }
+
+        Graph finalGraph = null;
+        switch (decision.getOperation())
+        {
+            case KLEENE:
+                break;
+            case NONE:
+                break;
+            case OR:
+                break;
+            default:
+                break;
+        }
+
+        return finalGraph;
     }
 
     private NFADecision characterSwitch(String s)
