@@ -73,15 +73,12 @@ public class GraphTest {
         Graph concat = Graph.ConcatGraphs(g, h);
 
         Graph test = new Graph();
-        State first = test.addVertex();
-        first.setStartState();
-        test.addVertex();
+        test.addVertex().setStartState();
         test.addVertex();
         test.addVertex();
         test.addEdge(0,1,TransitionType.A);
-        test.addEdge(1,2,TransitionType.EPSILON);
-        test.addEdge(2,3,TransitionType.B);
-        test.getStateAt(3).setFinalState();
+        test.addEdge(1,2,TransitionType.B);
+        test.getStateAt(2).setFinalState();
         Assert.assertTrue(concat.equals(test));
     }
 

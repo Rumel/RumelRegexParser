@@ -127,7 +127,7 @@ public class NFA {
                     }
                     else
                     {
-                        leftover = null;
+                        leftover = s.substring(1);
                     }
                 }
                 else
@@ -174,6 +174,13 @@ public class NFA {
                     {
                         case '*':
                             op = Operation.KLEENE;
+                            if(characters.length > i + 2)
+                            {
+                                if(characters[i+2] == '|')
+                                {
+                                    op = Operation.KLEENEOR;
+                                }
+                            }
                             break;
                         case '|':
                             op = Operation.OR;
@@ -201,6 +208,11 @@ public class NFA {
                     {
                         leftover = null;
                     }
+                }
+                else if(op == Operation.KLEENEOR)
+                {
+                    int opLength = i + 3;
+                    leftover = String.copyValueOf(characters, opLength, characters.length - opLength);
                 }
                 else
                 {

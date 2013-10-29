@@ -1,6 +1,7 @@
 package Logic;
 
 import Enums.Operation;
+import Enums.TransitionType;
 import Models.Graph;
 import Models.NFADecision;
 import org.junit.Assert;
@@ -115,76 +116,35 @@ public class NFATest {
         assertNFADecision(nfa5, "ab", "(bbbbb)*", Operation.NONE, false);
     }
 
-    // a
     @Test
-    public void makeNFASimple()
+    public void testCase1()
     {
         NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("a");
-        System.out.println(g.toString());
-    }
+        Graph actual = nfa.makeNFA("(a|b)*abb");
 
-    // a*
-    @Test
-    public void makeNFASimpleKleene()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("a*");
-        System.out.println(g.toString());
-    }
+        Graph expected = new Graph();
+        for(int i = 0; i < 11; i++)
+        {
+            expected.addVertex();
+        }
+        expected.getStateAt(0).setStartState();
+        expected.getStateAt(10).setFinalState();
+        expected.addEdge(0, 1, TransitionType.EPSILON);
+        expected.addEdge(1, 2, TransitionType.EPSILON);
+        expected.addEdge(1, 4, TransitionType.EPSILON);
+        expected.addEdge(2, 3, TransitionType.A);
+        expected.addEdge(4, 5, TransitionType.B);
+        expected.addEdge(3, 6, TransitionType.EPSILON);
+        expected.addEdge(5, 6, TransitionType.EPSILON);
+        expected.addEdge(6, 1, TransitionType.EPSILON);
+        expected.addEdge(0, 7, TransitionType.EPSILON);
+        expected.addEdge(6, 7, TransitionType.EPSILON);
+        expected.addEdge(7, 8, TransitionType.A);
+        expected.addEdge(8, 9, TransitionType.B);
+        expected.addEdge(9, 10, TransitionType.B);
 
-    // a|b
-    @Test
-    public void makeNFASimpleOr()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("a|b");
-        System.out.println(g.toString());
-    }
-
-    // a*b
-    @Test
-    public void makeNFASimpleKleenePlusLetter()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("a*b");
-        System.out.println(g.toString());
-    }
-
-    // a*|b
-    @Test
-    public void makeNFASimpleKeeneAndOr()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("a*|b");
-        System.out.println(g.toString());
-    }
-
-    // (a*)|b
-    @Test
-    public void makeNFASimpleKeeneAndOrWithParentheses()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("a*|b");
-        System.out.println(g.toString());
-    }
-
-    // (a*|b)*
-    @Test
-    public void makeNFASimpleKeeneAndOrKleene()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("(a*|b)*");
-        System.out.println(g.toString());
-    }
-
-    // Extraneous parentheses
-    @Test
-    public void makeNFALotsOfParentheses()
-    {
-        NFA nfa = new NFA();
-        Graph g = nfa.makeNFA("(((a)))");
-        System.out.println(g.toString());
+        String failPrint = String.format("Actual:\n%s\nExpected:\n%s\n", actual.toString(), expected.toString());
+        Assert.assertTrue(failPrint, actual.equals(expected));
     }
 
     private NFADecision getNFADecision(NFA nfa, Method method, String regex)

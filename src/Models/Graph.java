@@ -32,22 +32,22 @@ public class Graph {
         Set<State> firstSet = first.getVertexes();
         Set<State> secondSet = second.getVertexes();
         int firstSize = firstSet.size();
-        for(int i = 0; i < secondSet.size(); i++)
+        for(int i = 0; i < secondSet.size() - 1; i++)
         {
             first.addVertex();
         }
 
-        first.addEdge(firstSize - 1, firstSize, TransitionType.EPSILON);
+        //first.addEdge(firstSize - 1, firstSize, TransitionType.EPSILON);
         first.getStateAt(firstSize - 1).unsetFinalState();
 
         for(State s: secondSet)
         {
-            State newState = first.getStateAt(firstSize + s.getStateNumber());
+            State newState = first.getStateAt(firstSize + s.getStateNumber() - 1);
             int stateNumber = s.getStateNumber();
             List<Transition> edges = second.edgesOf(stateNumber);
             for(Transition t: edges)
             {
-                first.addEdge(newState.getStateNumber(), firstSize + t.getStateNumber(), t.getTransitionType());
+                first.addEdge(newState.getStateNumber(), firstSize + t.getStateNumber() - 1, t.getTransitionType());
             }
         }
         first.getStateAt(first.size() - 1).setFinalState();
@@ -59,6 +59,8 @@ public class Graph {
         Graph g = new Graph();
         State s = g.addVertex();
         s.setStartState();
+        g.addVertex();
+        g.addEdge(0, 1, TransitionType.EPSILON);
         g = Graph.ConcatGraphs(g, graph);
         // remove final state on graph
         g.getStateAt(g.size() - 1).unsetFinalState();
@@ -81,6 +83,8 @@ public class Graph {
     {
         Graph g = new Graph();
         g.addVertex().setStartState();
+        g.addVertex();
+        g.addEdge(0, 1, TransitionType.EPSILON);
         g = Graph.ConcatGraphs(g, first);
         g.getStateAt(g.size() - 1).unsetFinalState();
 
