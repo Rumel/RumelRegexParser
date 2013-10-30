@@ -106,6 +106,8 @@ public class DFA {
                     }
                     currentState = bTransition;
                     break;
+                case 'e':
+                    break;
                 default:
                     return false;
             }
