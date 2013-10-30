@@ -18,10 +18,12 @@ public class RumelRegexParser {
     {
         DFA dfa = new DFA();
         Scanner minion = new Scanner(System.in);
+
+        // Make the nfa and then create the dfa which gives back the dfa list to work with.
         List<DFAState> list = dfa.getDFA(new NFA().makeNFA(minion.nextLine().trim()));
-        String input;
-        while((input = minion.nextLine()) != null)
+        while(minion.hasNextLine())
         {
+            String input = minion.nextLine();
             if(dfa.accepted(list, input))
             {
                 System.out.println("yes");

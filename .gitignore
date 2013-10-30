@@ -13,3 +13,5 @@ reated by http://gitignore.io
 *.ipr
 *.iws
 .idea/
+
+*.txt
