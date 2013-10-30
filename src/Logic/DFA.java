@@ -21,14 +21,18 @@ public class DFA {
 
     }
 
+    // Get the dfa from a supplied nfa graph
     public List<DFAState> getDFA(Graph nfa)
     {
+        // start with 0
         List<DFAState> list = new ArrayList<>();
         Set epsilonSet = getEpsilonTransitions(nfa, 0);
         DFAState dfaState = new DFAState(epsilonSet);
         list.add(dfaState);
-        while(listHasUnamrked(list))
+        // while the dfa is unmarked keep processing
+        while(listHasUnmarked(list))
         {
+            // get first dfa then get its a and b transitions and modify list
             dfaState = getFirstUnmarked(list);
             Set aTransitions = getTransitionSet(nfa, dfaState.getBaseSet(), TransitionType.A);
             Set aEpsilons = getEpsilonTransitionsFromSet(nfa, aTransitions);
@@ -80,11 +84,14 @@ public class DFA {
         return list;
     }
 
+    // checks a regex against a built dfa
     public boolean accepted(List<DFAState> list, String regex)
     {
         int currentState = 0;
         char[] characters = regex.toCharArray();
 
+
+        // move around the list for each character provided, if an invalid option is provided return false
         for(char c: characters)
         {
             switch(c){
@@ -148,7 +155,7 @@ public class DFA {
         return null;
     }
 
-    private boolean listHasUnamrked(List<DFAState> list)
+    private boolean listHasUnmarked(List<DFAState> list)
     {
         for(DFAState dfas: list)
         {

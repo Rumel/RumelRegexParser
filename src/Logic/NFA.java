@@ -19,12 +19,15 @@ public class NFA {
 
     }
 
+    // Create the NFA graph from specified regex
     public Graph makeNFA(String regex)
     {
+        //Split regex into beginning and leftove
         NFADecision decision = characterSwitch(regex);
         Graph beginningGraph;
         if(decision.getReadyToGraph())
         {
+            // If its ready to graph make a graph with its character
             switch(decision.getBeginning().charAt(0))
             {
                 case 'a' | 'A':
@@ -40,15 +43,18 @@ public class NFA {
         }
         else
         {
+            // if graph is no ready recurse down
             beginningGraph = makeNFA(decision.getBeginning());
         }
 
         Graph leftoverGraph = null;
         if(decision.getLeftovers() != null)
         {
+            // if there are leftover recurse down until you have a graph
             leftoverGraph = makeNFA(decision.getLeftovers());
         }
 
+        //Get the operation to combine to the two graphs and perform it
         Graph finalGraph = null;
         switch (decision.getOperation())
         {
@@ -69,6 +75,7 @@ public class NFA {
             case OR:
                 finalGraph = Graph.OrGraph(beginningGraph, leftoverGraph);
                 break;
+            // this case occurs from '*|'
             case KLEENEOR:
                 finalGraph = Graph.KleeneGraph(beginningGraph);
                 finalGraph = Graph.OrGraph(finalGraph, leftoverGraph);
@@ -80,6 +87,7 @@ public class NFA {
         return finalGraph;
     }
 
+    // determine what to do with a string
     private NFADecision characterSwitch(String s)
     {
         NFADecision decision;
@@ -149,6 +157,7 @@ public class NFA {
         return decision;
     }
 
+    // parse out within parentheses
     private NFADecision getWithinParenths(String s)
     {
         char[] characters = s.toCharArray();
