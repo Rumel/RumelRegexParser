@@ -1,0 +1,7 @@
+To compile the java run:
+
+javac -d out -sourcepath src src/Logic/RumelRegexParser.java
+
+To run the program run:
+
+java -cp out Logic.RumelRegexParser
