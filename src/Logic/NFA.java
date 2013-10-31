@@ -36,6 +36,9 @@ public class NFA {
                 case 'b' | 'B':
                     beginningGraph = Graph.SimpleGraph(TransitionType.B);
                     break;
+                case 'e' | 'E':
+                    beginningGraph = Graph.SimpleGraph(TransitionType.EPSILON);
+                    break;
                 default:
                     beginningGraph = null;
                     break;
@@ -95,6 +98,7 @@ public class NFA {
         {
             case 'a' | 'A':
             case 'b' | 'B':
+            case 'e' | 'E':
                 String beginning;
                 String leftover;
                 Operation op;

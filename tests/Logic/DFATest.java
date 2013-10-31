@@ -104,6 +104,33 @@ public class DFATest {
         Assert.assertFalse(dfa.accepted(list, "bbaa"));
     }
 
+    @Test
+    public void testRegex_7()
+    {
+        List<DFAState> list = getList("abe");
+        Assert.assertTrue(dfa.accepted(list, "abe"));
+        Assert.assertTrue(dfa.accepted(list, "aebe"));
+        Assert.assertTrue(dfa.accepted(list, "ab"));
+    }
+
+    @Test
+    public void testRegex_8()
+    {
+        List<DFAState> list = getList("(b|ea)*");
+        Assert.assertTrue(dfa.accepted(list, "ba"));
+        Assert.assertTrue(dfa.accepted(list, "bbbbbbb"));
+        Assert.assertTrue(dfa.accepted(list, "aaaaaaa"));
+        Assert.assertTrue(dfa.accepted(list, ""));
+        Assert.assertTrue(dfa.accepted(list, "e"));
+    }
+
+    @Test
+    public void testRegex_9()
+    {
+        List<DFAState> list = getList("e");
+        Assert.assertFalse(dfa.accepted(list, "a"));
+    }
+
     private List<DFAState> getList(String s)
     {
         return dfa.getDFA(nfa.makeNFA(s));

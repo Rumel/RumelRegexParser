@@ -56,4 +56,12 @@ public class NFADecision {
     {
         readyToGraph = value;
     }
+
+    @Override
+    public String toString()
+    {
+        String beg = getBeginning() != null ? getBeginning().toString() : "NONE";
+        String left = getLeftovers() != null ? getLeftovers().toString() : "NONE";
+        return String.format("%s : %s  Op: %s", beg, left, operation.toString());
+    }
 }
